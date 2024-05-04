@@ -1,28 +1,31 @@
-import { use, expect } from "chai";
-import chaiHttp from "chai-http";
+import supertest from "supertest";
 import app from "../app.js";
 
-const chai = use(chaiHttp);
+const request = supertest(app);
 
 describe("Test API", () => {
   it("GET / should return 'Hola Mundo con Docker!'", (done) => {
-    chai
-      .request(app)
+    request
       .get("/")
+      .expect(200)
       .end((err, res) => {
-        expect(res).to.have.status(200);
-        expect(res.text).to.equal("Hola Mundo con Docker!");
+        if (err) return done(err);
+        if (res.text !== "Hola Mundo con Docker!") {
+          return done(new Error("Response does not match expected text"));
+        }
         done();
       });
   });
 
   it("GET /suma should return the sum of two numbers", (done) => {
-    chai
-      .request(app)
+    request
       .get("/suma?num1=2&num2=3")
+      .expect(200)
       .end((err, res) => {
-        expect(res).to.have.status(200);
-        expect(res.text).to.equal("5");
+        if (err) return done(err);
+        if (res.text !== "5") {
+          return done(new Error("Response does not match expected sum"));
+        }
         done();
       });
   });
