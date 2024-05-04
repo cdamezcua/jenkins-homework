@@ -15,5 +15,19 @@ pipeline {
                 }
             }
         }
+
+        stage('Run Tests') {
+            steps {
+                script {
+                    docker.image('my-image:latest').inside {
+                        //echo the result of ls command
+                        sh 'ls -la'
+                        dir('jenkins-homework') {
+                            sh 'npm test'
+                        }
+                    }
+                }
+            }
+        }
     }
 }
