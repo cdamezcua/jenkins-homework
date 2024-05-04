@@ -15,15 +15,5 @@ pipeline {
                 }
             }
         }
-
-        stage('Push Docker Image to Docker Hub') {
-            steps {
-                script {
-                    docker.withRegistry(DOCKERHUB_REGISTRY, DOCKERHUB_CREDENTIALS) {
-                        docker.image('my-image:latest').push('latest')
-                    }
-                }
-            }
-        }
     }
 }
