@@ -21,9 +21,6 @@ pipeline {
                 script {
                     docker.image('my-image:latest').inside {
                         sh 'ls -la'
-                        sh 'chown -R 125:126 "/.npm"'
-                        sh 'npm install'
-                        sh 'ls -la'
                         sh 'npm test'
                     }
                 }
