@@ -19,9 +19,8 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    docker.image('my-image:latest').inside {
-                        echo 'Running tests...'
-                    }
+                    echo 'Running tests...'
+                    sh 'npm test'
                 }
             }
         }
