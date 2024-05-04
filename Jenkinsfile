@@ -1,6 +1,11 @@
 pipeline {
 
-    agent any
+    agent {
+        docker {
+            image 'node:latest'
+            args '-v /var/run/docker.sock:/var/run/docker.sock' // Mount Docker socket for Docker commands
+        }
+    }
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
@@ -19,8 +24,9 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    // Run npm commands
-                    sh 'npm test'
+                    docker.image('my-image:latest').inside {
+                        sh 'npm test'
+                    }
                 }
             }
         }
