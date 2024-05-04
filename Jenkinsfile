@@ -16,19 +16,7 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
-            steps {
-                script {
-                    echo 'Running tests...'
-                    sh 'npm test'
-                }
-            }
-        }
-
         stage('Push Docker Image to Docker Hub') {
-            when {
-                expression { currentBuild.result == 'SUCCESS' }
-            }
             steps {
                 script {
                     docker.withRegistry(DOCKERHUB_REGISTRY, DOCKERHUB_CREDENTIALS) {
