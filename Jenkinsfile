@@ -1,11 +1,6 @@
 pipeline {
 
-    agent {
-        docker {
-            image 'ubuntu:20.04'
-            args '-u root'
-        }
-    }
+    agent any
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
@@ -25,7 +20,6 @@ pipeline {
             steps {
                 script {
                     // Run npm commands
-                    sh 'npm install'
                     sh 'npm test'
                 }
             }
