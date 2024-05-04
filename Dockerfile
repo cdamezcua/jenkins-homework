@@ -13,7 +13,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install -g mocha && \
+RUN npm install -g mocha chai && \
     npm install
 
 COPY . .
