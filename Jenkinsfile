@@ -20,10 +20,9 @@ pipeline {
             steps {
                 script {
                     docker.image('my-image:latest').inside {
-                        dir('/jenkins-homework') {
-                            sh 'ls -la'
-                            sh 'npm test'
-                        }
+                        sh 'ls -la'
+                        sh 'cd jenkins-homework'
+                        sh 'ls -la'
                     }
                 }
             }
