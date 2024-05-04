@@ -1,11 +1,6 @@
 pipeline {
 
-    agent {
-        docker {
-            image 'node:latest'
-            args '-v /var/run/docker.sock:/var/run/docker.sock' // Mount Docker socket for Docker commands
-        }
-    }
+    agent any
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
