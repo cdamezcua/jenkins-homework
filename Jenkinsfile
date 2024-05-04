@@ -1,39 +1,25 @@
+#!/usr/bin/env groovy
+
 pipeline {
 
-    agent any
-
-    environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
-        DOCKERHUB_REGISTRY = 'docker.io'
-        registry = "yourname/nodeapp"
+    agent {
+        docker {
+            image 'node'
+            args '-u root'
+        }
     }
 
     stages {
-        stage('Build Docker Image') {
+        stage('Build') {
             steps {
-                script {
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
-                }
+                echo 'Building...'
+                sh 'npm install'
             }
         }
-
-        stage('Run Tests Inside Docker Container') {
+        stage('Test') {
             steps {
-                script {
-                    try {
-                        dockerImage.inside {
-                            def PROJECTDIR = sh(script: 'echo \$PROJECTDIR', returnStdout: true).trim()
-                            sh "cp -r '$PROJECTDIR' '$WORKSPACE'"
-                            dir("$WORKSPACE$PROJECTDIR") {
-                                sh "npm test"
-                            }
-                        }
-                    }
-                    catch (err) {
-                        currentBuild.result = 'FAILURE'
-                        error "Tests failed"
-                    }
-                }
+                echo 'Testing...'
+                sh 'npm test'
             }
         }
     }
