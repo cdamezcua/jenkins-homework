@@ -16,6 +16,15 @@ pipeline {
             }
         }
 
-        
+        stage('Run Tests') {
+            steps {
+                script {
+                    docker.image('my-image:latest').inside {
+                        sh 'ls -la'
+                        sh 'npm test'
+                    }
+                }
+            }
+        }
     }
 }
