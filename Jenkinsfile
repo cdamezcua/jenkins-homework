@@ -1,11 +1,6 @@
 pipeline {
 
-    agent {
-        docker {
-            image 'node'
-            args '-u root'
-        }
-    }
+    agent none
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
