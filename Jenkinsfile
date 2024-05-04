@@ -16,11 +16,18 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
+        stage('Run Docker Container') {
+            steps {
+                script {
+                    docker.image('my-image:latest').run()
+                }
+            }
+        }
+
+        stage('Run Tests Inside Docker Container') {
             steps {
                 script {
                     docker.image('my-image:latest').inside {
-                        sh 'ls -la'
                         sh 'npm test'
                     }
                 }
