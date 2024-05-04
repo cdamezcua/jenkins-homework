@@ -21,8 +21,9 @@ pipeline {
                 script {
                     docker.image('my-image:latest').inside {
                         sh 'ls -la'
-                        sh 'cd jenkins-homework'
+                        sh 'npm install'
                         sh 'ls -la'
+                        sh 'npm test'
                     }
                 }
             }
