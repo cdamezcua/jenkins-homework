@@ -29,6 +29,10 @@ pipeline {
                             }
                         }
                     }
+                    catch (err) {
+                        currentBuild.result = 'FAILURE'
+                        error "Tests failed"
+                    }
                 }
             }
         }
