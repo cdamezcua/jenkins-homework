@@ -21,6 +21,7 @@ pipeline {
                 script {
                     docker.image('my-image:latest').inside {
                         sh 'ls -la'
+                        sh 'npm install --package-lock-only'
                         sh 'npm install'
                         sh 'ls -la'
                         sh 'npm test'
