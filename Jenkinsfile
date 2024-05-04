@@ -30,9 +30,13 @@ pipeline {
             }
             steps {
                 script {
-                    docker.withRegistry(DOCKERHUB_REGISTRY, DOCKERHUB_CREDENTIALS) {
-                        docker.image('my-image:latest').push('latest')
-                    }
+                    // Add npm to the PATH
+                    def npmHome = tool 'NodeJS' // Assuming 'NodeJS' is configured in Jenkins Global Tool Configuration
+                    env.PATH = "${npmHome}/bin:${env.PATH}"
+                    
+                    // Now npm should be accessible
+                    sh 'npm install'
+                    sh 'npm test'
                 }
             }
         }
