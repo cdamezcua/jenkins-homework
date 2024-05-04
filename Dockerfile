@@ -15,7 +15,7 @@ WORKDIR /jenkins-homework
 
 COPY package*.json ./
 
-RUN npm install -g mocha && \
+RUN npm install -g mocha supertest && \
     npm install
 
 COPY . .
