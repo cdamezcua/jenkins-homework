@@ -24,7 +24,7 @@ pipeline {
             steps {
                 echo 'Testing...'
                 script {
-                    docker.image(registry + ":$BUILD_NUMBER").inside('-p 127.0.0.1:3000:3000') {
+                    docker.image(registry + ":$BUILD_NUMBER").inside('-p 127.0.0.1:3001:3001') {
                         sh 'npm install'
                         sh 'npm test'
                     }
