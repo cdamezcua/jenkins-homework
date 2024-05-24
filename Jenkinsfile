@@ -1,54 +1,49 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:14' // Usa una imagen de Docker con Node.js preinstalado
-            args '-u root'  // Ejecuta el contenedor con privilegios de root si es necesario
-            reuseNode true  // Reutiliza el nodo de Jenkins para ejecutar los pasos del pipeline
-        }
-    }
-
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials') // Asegúrate de que este ID coincida con el de tus credenciales en Jenkins
+        registry = "cdamezcua/jenkins-homework"
+        registryCredential = 'dockerhub-credentials'
+        image = ''
     }
-
+    agent any
     stages {
-
-        stage('Build Docker Image') {
+        stage('Checkout') {
             steps {
-                dir('/tmp/jenkins-homework') {  // Cambia el directorio de trabajo a /tmp
-                    echo 'Building Docker image...'
-                    script {
-                        def app = docker.build('cdamezcua/jenkins-homework:latest', '-f Dockerfile .')
-                    }
-                }
+                echo 'Checking out the code...'
+                git branch: 'main', url: 'https://github.com/cdamezcua/jenkins-homework'
             }
         }
-
+        stage('Build') {
+            steps {
+                echo 'Building...'
+                script {
+                    image = docker.build registry + ":$BUILD_NUMBER"
+                }
+                sh 'npm install'
+            }
+        }
         stage('Test') {
             steps {
-                dir('/tmp/jenkins-homework') {  // Cambia el directorio de trabajo a /tmp
-                    echo 'Running tests...'
-                    sh 'npm test'
-                }
+                echo 'Testing...'
+                sh 'docker run -p 127.0.0.1:3000:3000 -d --name jenkins-homework-container ' + registry + ":$BUILD_NUMBER"
+                sh 'npm test'
+                sh 'docker stop jenkins-homework-container'
+                sh 'docker rm jenkins-homework-container'
             }
         }
-
-        stage('Push to DockerHub') {
+        stage('Deploy') {
             steps {
-                echo 'Pushing Docker image to DockerHub...'
+                echo 'Deploying...'
                 script {
-                    docker.withRegistry('', 'DOCKERHUB_CREDENTIALS') {
-                        def app = docker.image("cdamezcua/jenkins-homework:latest")
-                        app.push()
+                    docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
+                        image.push('latest')
                     }
                 }
             }
         }
-
-        stage('Deploy') {
+        stage('Cleaning up') {
             steps {
-                echo 'Deploying the application...'
-                // Agrega los pasos necesarios para desplegar tu aplicación
+                echo 'Cleaning up...'
+                sh "docker rmi $registry:$BUILD_NUMBER"
             }
         }
     }
