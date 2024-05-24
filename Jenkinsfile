@@ -23,10 +23,12 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing...'
-                sh 'docker run -p 127.0.0.1:3000:3000 -d --name jenkins-homework-container ' + registry + ":$BUILD_NUMBER"
-                sh 'npm test'
-                sh 'docker stop jenkins-homework-container'
-                sh 'docker rm jenkins-homework-container'
+                script {
+                    docker.image(registry + ":$BUILD_NUMBER").inside('-p 127.0.0.1:3000:3000') {
+                        sh 'npm install'
+                        sh 'npm test'
+                    }
+                }
             }
         }
         stage('Deploy') {
