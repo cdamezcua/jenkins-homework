@@ -18,7 +18,6 @@ pipeline {
                 script {
                     image = docker.build registry + ":$BUILD_NUMBER"
                 }
-                sh 'npm install'
             }
         }
         stage('Test') {
