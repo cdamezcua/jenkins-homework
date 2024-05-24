@@ -61,9 +61,9 @@ pipeline {
                 // Agrega los pasos necesarios para desplegar tu aplicación
             }
         }
-    }
 
-    */
+        */
+    }
 
     post {
         always {
