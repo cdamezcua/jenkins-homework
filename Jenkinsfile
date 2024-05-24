@@ -1,41 +1,27 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:14' // Usa una imagen de Docker con Node.js preinstalado
-            args '-u root'  // Ejecuta el contenedor con privilegios de root si es necesario
-            reuseNode true  // Reutiliza el nodo de Jenkins para ejecutar los pasos del pipeline
-        }
-    }
+    agent any
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials') // Asegúrate de que este ID coincida con el de tus credenciales en Jenkins
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                echo 'Checking out the code...'
-                git branch: 'main', url: 'https://github.com/cdamezcua/jenkins-homework'
-            }
-        }
 
         stage('Build') {
             steps {
-                dir('/tmp/jenkins-homework') {  // Cambia el directorio de trabajo a /tmp
-                    echo 'Building the project...'
-                    sh 'npm install'
-                }
+                echo 'Building the project...'
+                sh 'npm install'
             }
         }
 
         stage('Test') {
             steps {
-                dir('/tmp/jenkins-homework') {  // Cambia el directorio de trabajo a /tmp
-                    echo 'Running tests...'
-                    sh 'npm test'
-                }
+                echo 'Running tests...'
+                sh 'npm test'
             }
         }
+
+        /*
 
         stage('Build Docker Image') {
             steps {
@@ -66,6 +52,8 @@ pipeline {
                 // Agrega los pasos necesarios para desplegar tu aplicación
             }
         }
+
+        */
     }
 
     post {
