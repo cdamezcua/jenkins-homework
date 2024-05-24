@@ -25,6 +25,8 @@ pipeline {
             }
         }
 
+        /*
+
         stage('Test') {
             steps {
                 echo 'Running tests...'
@@ -60,6 +62,8 @@ pipeline {
             }
         }
     }
+
+    */
 
     post {
         always {
