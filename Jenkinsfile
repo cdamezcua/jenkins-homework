@@ -24,7 +24,7 @@ pipeline {
             steps {
                 echo 'Testing...'
                 script {
-                    docker.image(registry + ":$BUILD_NUMBER").inside('-u root:root -v /var/lib/jenkins/workspace/jenkins-homework:/app') {
+                    docker.image(registry + ":$BUILD_NUMBER").inside('-u root:root -v /opt/jenkins/workspace/jenkins-homework:/workspace') {
                         sh 'npm install'
                         sh 'npm test'
                     }
