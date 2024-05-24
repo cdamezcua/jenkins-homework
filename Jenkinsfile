@@ -3,6 +3,7 @@ pipeline {
         docker {
             image 'node:14' // Usa una imagen de Docker con Node.js preinstalado
             args '-u root'  // Ejecuta el contenedor con privilegios de root si es necesario
+            reuseNode true  // Reutiliza el nodo de Jenkins para ejecutar los pasos del pipeline
         }
     }
 
@@ -41,7 +42,7 @@ pipeline {
                 dir('/tmp/jenkins-homework') {  // Cambia el directorio de trabajo a /tmp
                     echo 'Building Docker image...'
                     script {
-                        def app = docker.build("cdamezcua/jenkins-homework:latest")
+                        def app = docker.build('cdamezcua/jenkins-homework:latest', '-f Dockerfile .')
                     }
                 }
             }
