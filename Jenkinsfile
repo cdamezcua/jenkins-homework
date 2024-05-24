@@ -4,12 +4,7 @@ pipeline {
         registryCredential = 'dockerhub-credentials'
         image = ''
     }
-    agent {
-        docker {
-            image 'node:14'
-            args '-u root:root'
-        }
-    }
+    agent any
     stages {
         stage('Checkout') {
             steps {
