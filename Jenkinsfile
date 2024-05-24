@@ -7,14 +7,14 @@ pipeline {
     }
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials-id') // Asegúrate de que este ID coincida con el de tus credenciales en Jenkins
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials') // Asegúrate de que este ID coincida con el de tus credenciales en Jenkins
     }
 
     stages {
         stage('Checkout') {
             steps {
                 echo 'Checking out the code...'
-                git branch: 'main', url: 'https://github.com/cdamezcua/jenkins-homework.git'
+                git branch: 'main', url: 'https://github.com/cdamezcua/jenkins-homework'
             }
         }
 
@@ -41,7 +41,7 @@ pipeline {
                 dir('/tmp/jenkins-homework') {  // Cambia el directorio de trabajo a /tmp
                     echo 'Building Docker image...'
                     script {
-                        def app = docker.build("tu-usuario-dockerhub/tu-imagen:latest")
+                        def app = docker.build("cdamezcua/jenkins-homework:latest")
                     }
                 }
             }
@@ -52,7 +52,7 @@ pipeline {
                 echo 'Pushing Docker image to DockerHub...'
                 script {
                     docker.withRegistry('', 'DOCKERHUB_CREDENTIALS') {
-                        def app = docker.image("tu-usuario-dockerhub/tu-imagen:latest")
+                        def app = docker.image("cdamezcua/jenkins-homework:latest")
                         app.push()
                     }
                 }
