@@ -1,6 +1,4 @@
-FROM ubuntu:20.04
-
-ARG DEBIAN_FRONTEND=noninteractive
+FROM node:14
 
 RUN apt-get update && \
     apt-get install -y curl && \
@@ -21,4 +19,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD ["node", "app.js"]
+ENTRYPOINT ["node", "app.js"]
