@@ -1,3 +1,3 @@
 # jenkins-homework
 
-Felices de que ya jala el Jenkins.
+Estamos felices de que ya jala el Jenkins.
